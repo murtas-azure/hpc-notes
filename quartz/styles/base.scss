@@ -494,7 +494,9 @@ pre {
   border: 1px solid var(--lightgray);
   position: relative;
 
-  &:has(> code.mermaid) {
+  &:has(> code.mermaid),
+  &:has(> code[data-language="tikz"]),
+  &:has(> code.language-tikz) {
     border: none;
   }
 
@@ -662,6 +664,109 @@ ol.overflow {
   display: initial;
   overflow-x: auto;
   overflow-y: hidden;
+}
+
+.tikz-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  & > div {
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  & svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+
+    text {
+      fill: var(--dark);
+    }
+
+    path[stroke="none"] {
+      fill: var(--dark);
+    }
+
+    [stroke="#000"],
+    [stroke="#000000"],
+    [stroke="black"],
+    g[stroke="#000"] {
+      stroke: var(--dark);
+    }
+
+    [fill="#000"],
+    [fill="#000000"],
+    [fill="black"] {
+      fill: var(--dark);
+    }
+  }
+}
+
+:root[saved-theme="dark"],
+[saved-theme="dark"],
+body.theme-dark {
+  .tikz-container svg {
+    text {
+      fill: var(--dark) !important;
+    }
+
+    text[fill="gray"] {
+      fill: var(--darkgray) !important;
+    }
+
+    g[stroke="gray"],
+    path[stroke="gray"],
+    [stroke="gray"] {
+      stroke: var(--darkgray) !important;
+    }
+
+    [stroke="#000"],
+    [stroke="#000000"],
+    [stroke="black"],
+    g[stroke="#000"] {
+      stroke: var(--dark) !important;
+    }
+
+    path[stroke="none"] {
+      fill: var(--dark) !important;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([saved-theme="light"]) .tikz-container svg {
+    text {
+      fill: var(--dark) !important;
+    }
+
+    text[fill="gray"] {
+      fill: var(--darkgray) !important;
+    }
+
+    g[stroke="gray"],
+    path[stroke="gray"],
+    [stroke="gray"] {
+      stroke: var(--darkgray) !important;
+    }
+
+    [stroke="#000"],
+    [stroke="#000000"],
+    [stroke="black"],
+    g[stroke="#000"] {
+      stroke: var(--dark) !important;
+    }
+
+    path[stroke="none"] {
+      fill: var(--dark) !important;
+    }
+  }
 }
 
 .external-embed.youtube,

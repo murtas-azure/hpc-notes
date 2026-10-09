@@ -261,7 +261,9 @@ export async function loadQuartzConfig(
     ...configOverrides,
   }
 
-  const enabledEntries = json.plugins.filter((e) => e.enabled)
+  const enabledEntries = json.plugins
+    .filter((e) => e.enabled)
+    .filter((e) => extractPluginName(e.source).toLowerCase() !== "tikz")
   const manifests = new Map<string, PluginManifest>()
 
   // Ensure all plugins are installed and collect native deps
@@ -492,7 +494,13 @@ export async function loadQuartzConfig(
 
   // Import built-in plugins
   const builtinPlugins = await import("../index")
-  const builtinTransformers: unknown[] = []
+  const tikzConfig = json.plugins.find(
+    (e) => extractPluginName(e.source).toLowerCase() === "tikz",
+  )
+  const tikzEnabled = tikzConfig ? tikzConfig.enabled !== false : true
+  const builtinTransformers: unknown[] = [
+    ...(tikzEnabled ? [builtinPlugins.Tikz(tikzConfig?.options)] : []),
+  ]
   const builtinEmitters = [
     builtinPlugins.ComponentResources(),
     builtinPlugins.Assets(),
